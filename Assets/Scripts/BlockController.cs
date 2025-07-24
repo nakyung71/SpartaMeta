@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockController : MonoBehaviour
 {
-    private const float blockSize = 5f;
+    private const float blockSize = 7f;
     float BlockMovingSpeed = 3f;
     float errorMargin = 0.2f;
     Vector2 previousPosition = new Vector2(0, -2.5f);
@@ -20,7 +20,8 @@ public class BlockController : MonoBehaviour
     public int Score { get { return score; } }
     int score;
 
-    public int Combo { get { return comboCount; } }
+    public int Combo { get { return combo; } }
+    int combo;
         
 
     private Vector2 blockBounds = new Vector2(blockSize, 1);
@@ -49,6 +50,9 @@ public class BlockController : MonoBehaviour
             {
                 PlaceBlock();
             }
+            SetScore();
+            UIManager.Instance.UpdateScore();
+
         }
 
     }
@@ -109,6 +113,7 @@ public class BlockController : MonoBehaviour
                     overlap= blockSize;
                 }
                 comboCount = 0;
+                combo++;
             }
         }
         else
@@ -140,12 +145,12 @@ public class BlockController : MonoBehaviour
     }
     void SetScore()
     {
-        score = stackCount + comboCount * 5;
+        score = stackCount + combo * 5;
         if (score > highScore)
         {
             PlayerPrefs.SetInt("HighScore", score);
         }
-        if (comboCount>highCombo)
+        if (combo>highCombo)
         {
             PlayerPrefs.SetInt("HighCombo",comboCount);
         }
@@ -162,6 +167,7 @@ public class BlockController : MonoBehaviour
         comboCount = -1;
         lastBlock = null;
         isMoving = true;
+        combo = 0;
         
         SpawnBlock();
         PlaceBlock();

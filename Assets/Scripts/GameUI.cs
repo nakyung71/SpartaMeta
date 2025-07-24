@@ -13,8 +13,9 @@ public class GameUI : BaseUI
     {
         return UIState.Game;
     }
-    public void SetUI()
+    public void SetUI(int score,int combo)
     {
-
+        gameScoreText.text = score.ToString();
+        comboScoreText.text = combo.ToString();
     }
 }

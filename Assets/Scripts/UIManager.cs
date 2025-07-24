@@ -12,65 +12,78 @@ public enum UIState
 }
 
 public class UIManager : MonoBehaviour
-    {
-        static UIManager instance;
-        public static UIManager Instance
-        { get { return instance; } }
+{
+    static UIManager instance;
+    public static UIManager Instance
+    { get { return instance; } }
 
-        UIState currentState = UIState.Home;
-        [SerializeField] HomeUI homeUI = null;
-        [SerializeField] GameUI gameUI = null;
-        [SerializeField] ScoreUI scoreUI = null;
-    
-        BlockController blockController = null;
-    
+    UIState currentState = UIState.Home;
+    HomeUI homeUI = null;
+    GameUI gameUI = null;
+    ScoreUI scoreUI = null;
+    TutorialUI tutorialUI = null;
+
+    BlockController blockController = null;
+    int playCount = 0;
+
+
+
+
 
     private void Awake()
+    {
+        instance = this;
+        
+
+        blockController = FindObjectOfType<BlockController>();
+
+        homeUI?.Init(this);
+        gameUI?.Init(this);
+        scoreUI?.Init(this);
+        tutorialUI?.Init(this);
+
+
+        ChangeState(UIState.Home);
+
+    }
+
+    public void ChangeState(UIState state)
+    {
+        currentState = state;
+        homeUI?.SetActive(currentState);
+        gameUI?.SetActive(currentState);
+        scoreUI?.SetActive(currentState);
+        tutorialUI?.SetActive(currentState);
+    }
+
+    public void OnClickStart()
+    {
+        if(playCount == 0)
         {
-            instance = this;
-            Screen.SetResolution(480, 640, true);
-
-            blockController=FindObjectOfType<BlockController>();
-            homeUI?.Init(this);
-            gameUI?.Init(this);
-            scoreUI?.Init(this);
-
-            ChangeState(UIState.Home);
-
+            ChangeState(UIState.Tutorial);
         }
+        blockController.ReStartGame();
+        playCount++;
+        ChangeState(UIState.Game);
+    }
 
-        public void ChangeState(UIState state)
-        {
-            currentState = state;
-            homeUI?.SetActive(currentState);
-            gameUI?.SetActive(currentState);
-
-            scoreUI?.SetActive(currentState);
-        }
-
-        public void OnClickStart()
-        {
-            blockController.ReStartGame();
-            ChangeState(UIState.Game);
-        }
-
-        public void OnClickExit()
-        {
+    public void OnClickExit()
+    {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
-        }
+    }
 
     public void UpdateScore()
     {
-        gameUI.SetUI(theStack.Score, theStack.Combo, theStack.MaxCombo);
+        gameUI.SetUI(blockController.Score, blockController.Combo);
     }
 
     public void SetScoreUI()
     {
-        Debug.Log($"scoreUI is null? {scoreUI == null} / blockController is null? {blockController == null}");
+        
         scoreUI.SetUI(blockController.Score,  blockController.Combo, blockController.HighScore, blockController.HighCombo);
         
         ChangeState(UIState.Score);
