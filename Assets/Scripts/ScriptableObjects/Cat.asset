@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf8cbd71217a3d8429416904a0b44bb5, type: 3}
+  m_Name: Cat
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -1608212915, guid: b92cd3c8d9bbe9143b4782e56ef6e108, type: 3}
+  animatorController: {fileID: 9100000, guid: 00a41bcb749275e4b8758b60ab812a18, type: 2}
+  modelPrefab: {fileID: 6168862720584424371, guid: 4967232cb20679c48a2be8dfb19c146d, type: 3}

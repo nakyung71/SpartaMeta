@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,57 +11,76 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
-    //일단 플레이어의 포지션을 가져와야되나?
-    //뭐가 필요할까
-
     public float movespeed = 7f;
     public Vector2 moveDirection = Vector2.zero;
 
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
     
-    [SerializeField] SpriteRenderer characterSpriteRenderer;
-    [SerializeField] SpriteRenderer catSpriteRenderer;
-    [SerializeField] Animator characterAnimator;
-    [SerializeField] Animator catAnimator;
+    SpriteRenderer spriteRenderer;
+    Animator animator;
+    RuntimeAnimatorController runtimeAnimatorController;
+    GameObject playerPrefab;
 
-    [SerializeField] GameObject characterPrefab;
-    [SerializeField] GameObject catPrefab;
-    
-    bool IsCat = false;
+
+    [SerializeField] CostumeData catCostume;
+    [SerializeField] CostumeData humanCostume;
+
+
+    private GameObject currentCostume;
 
     private GameObject lastTriggeredObject;
 
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        characterPrefab.SetActive(true);
+        
+
+        WearCostume(catCostume);
+        
+        
     }
 
     private void Update()
     {
-        if (IsCat)
-        {
-            characterPrefab.SetActive(false);
-            catPrefab.SetActive(true);
-            Move(catAnimator,catSpriteRenderer);
-        }
-        else
-        {
-            characterPrefab.SetActive(true);
-            catPrefab.SetActive(false);
 
-            Move(characterAnimator,characterSpriteRenderer);
-        }
-
+        Move(animator, spriteRenderer);
 
         if (Input.GetKeyDown(KeyCode.E)&&lastTriggeredObject!=null)
         {
             IInteractable interactable = lastTriggeredObject.GetComponent<IInteractable>();
             interactable?.Interact();
-
         }
+    }
+    public void ChangeCat()
+    {
+        WearCostume(catCostume);
+    }
+
+    public void ChangeHuman()
+    {
+        WearCostume(humanCostume);
+    }
+
+
+    public void WearCostume(CostumeData costume)
+    {
+        if(currentCostume!=null)
+        {
+            Destroy(currentCostume);
+        }
+
+        GameObject model = Instantiate(costume.modelPrefab, transform);
+        model.SetActive(true);
+        currentCostume = model;
+
+        spriteRenderer = model.GetComponentInChildren<SpriteRenderer>();
+        animator = model.GetComponentInChildren<Animator>();
+        
+        playerPrefab =costume.modelPrefab;
+        animator.runtimeAnimatorController=costume.animatorController;
+        spriteRenderer.sprite = costume.sprite;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -68,20 +88,23 @@ public class PlayerController : MonoBehaviour
         lastTriggeredObject=collision.gameObject;
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject==lastTriggeredObject)
+        {
+            lastTriggeredObject=null;
+        }
+    }
+  
 
-    public void ChangeCat()
-    {
-        
-        IsCat = true;
-    }
-    public void ChangeHuman()
-    {
-        IsCat = false;
-    }
+
+
+
+
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(rigidbody.position+moveDirection*movespeed*Time.fixedDeltaTime);
+        rb.position=rb.position+moveDirection*movespeed*Time.fixedDeltaTime;
     }
 
     public void Move(Animator animator,SpriteRenderer spriteRenderer)
