@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 moveDirection = Vector2.zero;
 
     Rigidbody2D rb;
-    CapsuleCollider2D capsuleCollider;
+
     
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
+
         
 
         WearCostume(catCostume);
@@ -96,11 +96,6 @@ public class PlayerController : MonoBehaviour
         }
     }
   
-
-
-
-
-
 
     private void FixedUpdate()
     {

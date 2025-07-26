@@ -9,3 +9,9 @@ using UnityEngine;
 
     }
 
+public interface IRidable
+{
+    public void Ride();
+    public void GetOff();
+}
+
