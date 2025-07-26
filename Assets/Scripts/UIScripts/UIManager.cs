@@ -18,11 +18,11 @@ public class UIManager : MonoBehaviour
     { get { return instance; } }
 
     UIState currentState = UIState.Home;
-    HomeUI homeUI = null;
-    GameUI gameUI = null;
-    ScoreUI scoreUI = null;
-    TutorialUI tutorialUI = null;
-
+    [SerializeField] HomeUI homeUI = null;
+    [SerializeField] GameUI gameUI = null;
+    [SerializeField] ScoreUI scoreUI = null;
+    [SerializeField] TutorialUI tutorialUI = null;
+    
     BlockController blockController = null;
     int playCount = 0;
 
@@ -61,9 +61,11 @@ public class UIManager : MonoBehaviour
         if(playCount == 0)
         {
             ChangeState(UIState.Tutorial);
+            playCount++;
+            return;
         }
         blockController.ReStartGame();
-        playCount++;
+        
         ChangeState(UIState.Game);
     }
 
@@ -79,6 +81,7 @@ public class UIManager : MonoBehaviour
     public void UpdateScore()
     {
         gameUI.SetUI(blockController.Score, blockController.Combo);
+
     }
 
     public void SetScoreUI()
