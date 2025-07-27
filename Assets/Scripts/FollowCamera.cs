@@ -6,8 +6,8 @@ public class FollowCamera : MonoBehaviour
 {
     public Transform target;
     Vector3 offset;
-    //Vector2 minposition;
-    //Vector2 maxposition;
+    //Vector2 minposition = new Vector2(-24f, -13f);
+    //Vector2 maxposition = new Vector2(21f, 10f);
 
 
     private void Start()

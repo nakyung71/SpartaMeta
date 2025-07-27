@@ -10,6 +10,8 @@ public class BlockController : MonoBehaviour
     Vector2 previousPosition = new Vector2(0, -2.5f);
     int stackCount = -1;
     int comboCount = -1;
+    Color previousColor;
+  
 
     public int HighScore { get { return highScore; } }
     int highScore;
@@ -27,7 +29,7 @@ public class BlockController : MonoBehaviour
     private Vector2 blockBounds = new Vector2(blockSize, 1);
 
     public GameObject originBlock;
-    Transform lastBlock = null;
+    GameObject lastBlock=null;
     float blockTransition = 0f;
 
 
@@ -63,33 +65,28 @@ public class BlockController : MonoBehaviour
             Debug.Log("no originblock");
         }
         GameObject newBlock = null;
-        Transform newtrans= null;
-
-        newBlock = Instantiate(originBlock);
-        newtrans=newBlock.transform;
-        newtrans.parent=this.transform;
-        newtrans.localPosition = previousPosition+Vector2.up;
-        newtrans.localScale=new Vector2(blockBounds.x,blockBounds.y);
         
+        newBlock = Instantiate(originBlock,transform);
+        newBlock.transform.localPosition = previousPosition + Vector2.up;
+        newBlock.transform.localScale = new Vector2(blockBounds.x, blockBounds.y);
+        
+        newBlock.GetComponent<SpriteRenderer>().color = ChangeColor();
+        previousColor = newBlock.GetComponent<SpriteRenderer>().color;
         this.transform.position=Vector2.down*stackCount;
 
         blockTransition = 0f;
 
-        
-        lastBlock=newtrans;
+
+        lastBlock = newBlock;
         isMoving = true;
         
-
-
-
-
-
     }
+    
     void MoveBlock()
     {
         blockTransition += Time.deltaTime * BlockMovingSpeed;
         float movePosition = Mathf.PingPong(blockTransition, blockSize) - blockSize / 2;
-        lastBlock.localPosition=new Vector2(movePosition,lastBlock.localPosition.y);
+        lastBlock.transform.localPosition=new Vector2(movePosition,lastBlock.transform.localPosition.y);
     }
 
 
@@ -97,7 +94,7 @@ public class BlockController : MonoBehaviour
     {
        
         isMoving = false;
-        Vector2 currentpos=lastBlock.localPosition;
+        Vector2 currentpos = lastBlock.transform.localPosition;
         float deltaX= previousPosition.x - currentpos.x;
         float overlap = blockBounds.x - Mathf.Abs(deltaX);
         if (deltaX <= errorMargin)
@@ -131,9 +128,9 @@ public class BlockController : MonoBehaviour
 
         }
         blockBounds.x= overlap;
-        lastBlock.localScale=new Vector2(blockBounds.x,blockBounds.y);
-        lastBlock.localPosition = new Vector2(previousPosition.x - deltaX / 2, currentpos.y);
-        previousPosition = lastBlock.localPosition; // 
+        lastBlock.transform.localScale=new Vector2(blockBounds.x,blockBounds.y);
+        lastBlock.transform.localPosition = new Vector2(previousPosition.x - deltaX / 2, currentpos.y);
+        previousPosition = lastBlock.transform.localPosition; // 
         stackCount++;
         SpawnBlock(); // 
     }
@@ -172,7 +169,26 @@ public class BlockController : MonoBehaviour
         SpawnBlock();
         PlaceBlock();
     }
-    
 
-    
+    Color ChangeColor()
+    {
+
+        if (previousColor == Color.red)
+        {
+            return Color.yellow;
+        }
+        else if (previousColor == Color.yellow)
+        {
+            return Color.green;
+        }
+        else if (previousColor == Color.green)
+        {
+            return Color.blue;
+        }
+        else
+        {
+            return Color.red;
+        }
+    }
+
 }

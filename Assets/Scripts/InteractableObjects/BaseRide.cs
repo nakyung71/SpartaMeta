@@ -83,7 +83,7 @@ public abstract class BaseRide : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("안전하지 않은 구역");
+        
         if (collision.CompareTag("Ground"))
         {
             IsSafe = false;
@@ -93,7 +93,7 @@ public abstract class BaseRide : MonoBehaviour
     {
         if (collision.CompareTag("Ground"))
         {
-            Debug.Log("안전한 구역");
+            
             IsSafe = true;
         }
     }

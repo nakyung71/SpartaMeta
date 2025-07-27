@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NPCController : MonoBehaviour,IInteractable
+public class Mushroom : MonoBehaviour,IInteractable
 {
     public void Interact()
     {

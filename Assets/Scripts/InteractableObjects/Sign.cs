@@ -5,18 +5,32 @@ using UnityEngine.UI;
 
 public class Sign : MonoBehaviour,IInteractable
 {
-    [SerializeField] Canvas tutorialcanvas;
-    [SerializeField] Button exitButton;
+    [SerializeField] Canvas tutorialcanvas_1;
+    [SerializeField] Canvas tutorialcanvas_2;
+    [SerializeField] Button exitButton_1;
+    [SerializeField] Button exitButton_2;
+    [SerializeField] Button nextButton;
     public void Interact()
     {   
-        tutorialcanvas.gameObject.SetActive(true);
-        exitButton.onClick.AddListener(ClosePanel);
+        tutorialcanvas_1.gameObject.SetActive(true);
+        exitButton_1.onClick.AddListener(ClosePanel);
+        exitButton_2.onClick.AddListener(ClosePanel);
+        nextButton.onClick.AddListener(NextPage);
+    }
+
+    private void NextPage()
+    {
+        tutorialcanvas_1.gameObject.SetActive(false);
+        tutorialcanvas_2.gameObject.SetActive(true);
+        nextButton.onClick.RemoveAllListeners();
     }
 
     private void ClosePanel()
     {
-        tutorialcanvas.gameObject.SetActive(false);
-        exitButton.onClick.RemoveAllListeners();
+        tutorialcanvas_1.gameObject.SetActive(false);
+        tutorialcanvas_2.gameObject.SetActive(false);
+        exitButton_1.onClick.RemoveAllListeners();
+        exitButton_2.onClick.RemoveAllListeners();
     }
     
 }
