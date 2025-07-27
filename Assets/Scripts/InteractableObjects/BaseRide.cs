@@ -8,6 +8,7 @@ public abstract class BaseRide : MonoBehaviour
     [SerializeField] PlayerController playerObject;
     
     Rigidbody2D rb;
+    Rigidbody2D playerRigidBody;
     SpriteRenderer sheepSpriteRenderer;
     SpriteRenderer playerSpriteRenderer;
     Animator playerAnimator;
@@ -16,7 +17,7 @@ public abstract class BaseRide : MonoBehaviour
 
     Vector2 moveDirection = Vector2.zero;
     protected float speed = 10f;
-
+    private bool IsSafe = true;
 
 
 
@@ -24,6 +25,8 @@ public abstract class BaseRide : MonoBehaviour
     {
         
         rb = GetComponent<Rigidbody2D>();
+        playerRigidBody=playerObject.GetComponent<Rigidbody2D>();
+        playerRigidBody.bodyType = RigidbodyType2D.Kinematic;
         sheepSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         playerSpriteRenderer = playerObject.GetComponentInChildren<SpriteRenderer>();
         playerAnimator = playerObject.GetComponentInChildren<Animator>();
@@ -37,7 +40,16 @@ public abstract class BaseRide : MonoBehaviour
         Move(playerObject);
         if(Input.GetKeyDown(KeyCode.E))
         {
-            ridable.GetOff();
+            if (IsSafe)
+            {
+                ridable.GetOff();
+                playerRigidBody.bodyType = RigidbodyType2D.Dynamic;
+            }
+            else
+            {
+                return;
+            }
+
         }
     }
 
@@ -69,5 +81,21 @@ public abstract class BaseRide : MonoBehaviour
         
     }
 
-  
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("안전하지 않은 구역");
+        if (collision.CompareTag("Ground"))
+        {
+            IsSafe = false;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ground"))
+        {
+            Debug.Log("안전한 구역");
+            IsSafe = true;
+        }
+    }
+
 }

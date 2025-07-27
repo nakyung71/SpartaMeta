@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] SheepRide sheepride;
-    private BaseRide baseRide;
+    
     // Start is called before the first frame update
 
     private void Awake()
     {
-        baseRide = sheepride;
-        baseRide.enabled = false;
+        BaseRide[] allRides = FindObjectsOfType<BaseRide>();
+        foreach (var ride in allRides)
+        {
+            ride.enabled = false;
+        }
     }
-    void Start()
-    {
-        
-    }
+    
 
     
 }

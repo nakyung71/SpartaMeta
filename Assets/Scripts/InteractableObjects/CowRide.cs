@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class SheepRide : BaseRide
+public class CowRide : BaseRide
 {
+    // Start is called before the first frame update
     public override void Init()
     {
         
         base.Init();
-        speed = 9f;
+        speed = 15f;
     }
 }
