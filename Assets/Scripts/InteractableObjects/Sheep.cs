@@ -9,7 +9,7 @@ public class Sheep : MonoBehaviour,IInteractable,IRidable
     [SerializeField] SheepRide sheepRide;
     
    
-
+    
     public void Interact()
     {
        
@@ -24,10 +24,12 @@ public class Sheep : MonoBehaviour,IInteractable,IRidable
         playerTransform.localPosition = Vector3.up;
         playerTransform.localRotation = Quaternion.identity;
         playerController.GetComponent<Rigidbody2D>().isKinematic = true;
+        sheepRide.Init();
         
     }
     public void GetOff()
     {
+        playerTransform.localPosition = new Vector3(0, -0.05f, 0);
         playerController.enabled = true;
         sheepRide.enabled = false;
     }

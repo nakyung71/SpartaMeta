@@ -5391,8 +5391,8 @@ GameObject:
   - component: {fileID: 829158944}
   - component: {fileID: 829158945}
   - component: {fileID: 829158947}
-  - component: {fileID: 829158948}
   - component: {fileID: 829158946}
+  - component: {fileID: 829158948}
   m_Layer: 0
   m_Name: Sheep
   m_TagString: Untagged
@@ -5502,10 +5502,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 829158943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c44c90b636edcf409b70543edbe0f60, type: 3}
+  m_Script: {fileID: 11500000, guid: 629178cbd4ba14e4fb7ddb77f61908cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 1366949312}
   playerObject: {fileID: 1366949315}
 --- !u!1 &890751869
 GameObject:
@@ -24327,7 +24326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c2d8f4de80ee9428871e307a31a54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheepRide: {fileID: 829158948}
+  sheepride: {fileID: 829158948}
 --- !u!4 &1679553250
 Transform:
   m_ObjectHideFlags: 0
